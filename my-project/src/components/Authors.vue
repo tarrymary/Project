@@ -1,9 +1,6 @@
 <template>
     <v-layout row justify-center>
-        <v-flex xs6>
-            <div>
-
-            </div>
+        <v-flex>
         </v-flex>
     </v-layout>
 </template>
@@ -13,3 +10,6 @@ export default {
     
 }
 </script>
+
+<style>
+</style>

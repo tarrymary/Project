@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import SignIn from '@/components/SignIn'
 import SignUp from '@/components/SignUp'
-import Book from '@/components/Book'
+import Library from '@/components/Library'
 import Authors from '@/components/Authors'
 
 Vue.use(Router)
@@ -27,9 +27,9 @@ export default new Router({
       component: SignUp
     },
     {
-      path: '/book',
-      name: 'Book',
-      component: Book
+      path: '/library',
+      name: 'Library',
+      component: Library
     },
     {
       path: '/authors',
