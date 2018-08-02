@@ -4,7 +4,6 @@ import Home from '@/components/Home'
 import SignIn from '@/components/SignIn'
 import SignUp from '@/components/SignUp'
 import Library from '@/components/Library'
-import Authors from '@/components/Authors'
 
 Vue.use(Router)
 
@@ -30,11 +29,6 @@ export default new Router({
       path: '/library',
       name: 'Library',
       component: Library
-    },
-    {
-      path: '/authors',
-      name: 'Authors',
-      component: Authors
     }
   ]
 })

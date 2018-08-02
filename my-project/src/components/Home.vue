@@ -1,28 +1,41 @@
 <template>
   <v-container fluid class="px-0 pt-0">
-    <v-layout>
-      <v-btn @click="getUsers">get users</v-btn>
+    <v-layout row justify-center>
+      <v-flex xs2>
+        <v-form v-model="valid">
+          <v-text-field label="Название книги"
+          v-model="name"
+          :rules="nameRules"
+          required></v-text-field>
+          <v-text-field label="Жанр"
+          v-model="genre"
+          :rules="nameRules"
+          required></v-text-field>
+          <v-btn @click="$refs.bookInput.click()" :disabled="!valid">Загрузить книгу</v-btn>
+          <input @change="postBooks" ref="bookInput" type="file" style="display: none"> 
+        </v-form>
+      </v-flex>
+      <!-- <v-btn @click="getUsers">get users</v-btn>
       <v-btn @click="putUser">put user</v-btn>
       <v-btn @click="getUser">get user</v-btn>
-      <v-btn @click="$refs.bookInput.click()">Загрузить книгу</v-btn>
-      <input @change="postBooks" ref="bookInput" type="file" style="display: none">
       <v-btn @click="putBook">put book</v-btn>
-      <v-btn @click="getBook">get book</v-btn>
+      <v-btn @click="getBook">get book</v-btn> -->
     </v-layout>
-    
-    <div v-if='isSuccess'>Все хорошо</div>
-    <div v-if='!isSuccess'>{{ errorMessage }}</div>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
+import router from "../router";
+
 export default {
   data() {
     return {
-      isSuccess: false,
-      errorMessage: ''
-    }
+      valid: false,
+      name: "",
+      genre: "",
+      nameRules: [v => !!v || "Name is required"]
+    };
   },
 
   methods: {
@@ -43,28 +56,32 @@ export default {
         .then(res => {});
     },
     postBooks(e) {
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        this.createBook(reader.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    },
+
+    createBook(book) {
       let file = {
-          'lastMod'    : e.target.files[0].lastModified,
-          'lastModDate': e.target.files[0].lastModifiedDate,
-          'name'       : e.target.files[0].name,
-          'size'       : e.target.files[0].size,
-          'type'       : e.target.files[0].type
-      }
+        title: this.name,
+        genre: this.genre,
+        year: this.year,
+        rating: 5,
+        book: book,
+        picture: 1
+      };
 
       axios
         .post("https://onlinereader.herokuapp.com/api/books", file)
         .then(res => {
-          if(res.data.status === 'OK') {
-            this.isSuccess = true;
-          } else {
-            this.isSuccess = false;
-            this.errorMessage = res.data.message
+          if (res.data.status === "OK") {
+            router.push('/library');
           }
-        })
-        .catch(e => {
-          alert(e);
-        })
+        });
     },
+
     putBook() {
       let fd = new FormData();
       fd.append();
@@ -79,7 +96,7 @@ export default {
         .then(res => {});
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -100,6 +117,6 @@ a {
 }
 
 .books-img {
-  width:80px;
+  width: 80px;
 }
 </style>

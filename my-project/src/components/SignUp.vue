@@ -68,6 +68,7 @@ export default {
       fd.append("login", this.name);
       fd.append("email", this.email);
       fd.append("password", this.password);
+      
 
       axios
         .post("https://onlinereader.herokuapp.com/api/users", fd)

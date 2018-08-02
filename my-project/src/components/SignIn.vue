@@ -31,7 +31,7 @@
   export default {
     data () {
       return {
-        valid: false,
+      valid: false,
       name: '',
       nameRules: [
         v => !!v || 'Name is required',

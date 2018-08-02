@@ -1,51 +1,59 @@
 <template>
     <v-layout class="library">
       <div class="library__content" v-for='book in books' :key="book.id">
-        <lable>{{ book.title }}</lable>
-        <div>Жанр: {{ book.genre }}</div>
-        <div>Год: {{ book.year }}</div>
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <div class="book-name">{{book.title}}</div>
+              <div>Жанр: {{ book.genre }}</div>
+            </div>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn v-bind:href="book.book" download flat>Скачать</v-btn>
+          </v-card-actions>
+        </v-card>
+        
       </div>
     </v-layout>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-data() {
+  data() {
     return {
-        books: [
-        ]
-    }
-},
- created() {
+      books: []
+    };
+  },
+  methods: {},
+
+  created() {
     axios.get("https://onlinereader.herokuapp.com/api/books").then(res => {
-      if(res.data.status === 'OK') {
-        this.books = res.data.data;
-      }
+      this.books = res.data;
     });
   }
-}
+};
 </script>
 
 <style>
-    .flex {
-        height: 0;
-    }
-    .v-content__wrap {
-        height: 0;
-    }
-    .library {
-        height: 220px;
-        border: 1px solid #000;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: start;
-    }
-    .library__content {
+.library {
+  padding: 10px 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
 
-    }
-    
-    lable {
-        font-size: 15pt;
-    }
+.library__content {
+  padding: 0 10px 10px 0;
+  flex-basis: 25%;
+}
+
+.book-name {
+  text-decoration: none;
+  font-size: 12pt;
+  color: #4CAF50;
+}
+
 </style>
